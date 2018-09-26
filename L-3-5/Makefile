@@ -1,8 +1,8 @@
 CXX = gcc
 CXXFLAGS = -g3 -Wall
 
-sources = test.c
-target  = test
+sources = a.c
+target  = a.out
 
 $(target): $(sources)
 	$(CXX) $^ $(CXXFLAGS) -o $@
