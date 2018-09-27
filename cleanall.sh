@@ -8,7 +8,6 @@ function listfiles(){
         then
             listfiles $1/$file
         else
-            echo $1/$file
             if [ $file = $mkname ]
             then
                 make -C $1 clean
@@ -17,4 +16,15 @@ function listfiles(){
         fi
     done
 }
-listfiles .
+
+dir='.'
+if [ $# -gt 0 ]
+then
+    if [ -d $1 ]
+    then
+        dir=$1
+    else
+        echo $1 not a directory
+    fi
+fi
+listfiles $dir
