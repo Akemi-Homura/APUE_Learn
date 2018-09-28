@@ -17,7 +17,7 @@ static long nreg, ndir, nblk, nchr, nfifo, nslink, nsock, ntot;
 
 # define RELEASE 1
 # define DEBUG   0
-# define RUNTYPE DEBUG
+# define RUNTYPE RELEASE
 
 int      lstat(const char*, struct stat*);
 
@@ -98,6 +98,9 @@ dopath(Myfunc* func){
     if ((ret = func(fullpath, &statbuf, FTW_D)) != 0){
         return ret;
     }
+#if RUNTYPE == DEBUG
+        printf("%s\n",fullpath);
+#endif
     n = strlen(fullpath);
     if( n + (size_t)NAME_MAX + 2 > pathlen) { /* expand path buffer */
         pathlen *= 2;
@@ -114,12 +117,10 @@ dopath(Myfunc* func){
     }
     while ((dirp = readdir(dp)) != NULL) {
         if (strcmp(dirp->d_name, ".") == 0 ||
-                strcmp(dirp->d_name, "..") == 0){
+                strcmp(dirp->d_name, "..") == 0 ||
+                strcmp(dirp->d_name, ".git") == 0){
             continue;  /* ignore dot and dot-dot */
         }
-#if RUNTYPE == DEBUG
-        printf("%s\n",dirp->d_name);
-#endif
         strcpy(&fullpath[n], dirp->d_name); /* append name after "/" */
         if ((ret = dopath(func)) != 0){ /* recursive */
             break;          /* time to leave */
