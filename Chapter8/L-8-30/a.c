@@ -38,8 +38,8 @@ main(int argc, char** argv){
     setbuf(stdout, NULL);
 #if defined(NZERO)
     nzero = NZERO;
-#elif defined(_SC_NSERO)
-    nzero = sysconf(_SC_NSERO);
+#elif defined(_SC_NZERO)
+    nzero = sysconf(_SC_NZERO);
 #else
 #error NZERO undefined
 #endif
